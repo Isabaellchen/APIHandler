@@ -1,0 +1,5 @@
+name: APIHandler
+
+main: isabaellchen.apihandler.APIHandler
+
+version: 0.1
