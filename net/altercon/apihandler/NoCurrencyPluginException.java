@@ -9,10 +9,7 @@ package net.altercon.apihandler;
 public class NoCurrencyPluginException extends Exception {
 
     public NoCurrencyPluginException() {
-    }
-
-    public NoCurrencyPluginException(String ex) {
-        super(ex);
+        super("No currency plugin found!");
     }
 
 }

@@ -28,26 +28,14 @@ public class APIHandler extends JavaPlugin {
      * implementing the CurrencyInterface
      */
     private CurrencyAPI currencyAPI = new CurrencyAPI();
+    private boolean isCurrencyLoaded = false;
     /**
      * The respective PermissionAPI
      */
     private PermissionsAPI permissionsAPI = new PermissionsAPI();
+    private boolean isPermissionsLoaded = false;
 
     public void onEnable() {
-
-        PluginManager pm = getServer().getPluginManager();
-
-        //For each plugin loaded, check if an Interface is being used and
-        //register it to the respective API as a listener
-        for (Plugin p : pm.getPlugins()) {
-            if (CurrencyInterface.class.isInstance(p)) {
-                registerPlugin(p, APIs.Currency);
-            }
-            if (PermissionsInterface.class.isInstance(p)) {
-                registerPlugin(p, APIs.Permissions);
-            }
-        }
-
         PluginDescriptionFile pdfFile = this.getDescription();
         System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
 
@@ -70,6 +58,7 @@ public class APIHandler extends JavaPlugin {
         debugees.put(player, value);
     }
 
+    @Override
     public boolean onCommand(CommandSender cs, Command cmnd, String string, String[] strings) {
         return true;
     }
@@ -81,8 +70,12 @@ public class APIHandler extends JavaPlugin {
      * while there is no Permission plugin installed.
      */
     public PermissionsAPI getPermissionsAPI() throws NoPermissionPluginException {
+        if (!isPermissionsLoaded) {
+            registerPlugins(APIs.Permissions);
+            isPermissionsLoaded = true;
+        }
         if (permissionsAPI.isEmpty()) {
-            throw new NoPermissionPluginException("No Permission plugin installed!");
+            throw new NoPermissionPluginException();
         }
         return permissionsAPI;
     }
@@ -94,8 +87,12 @@ public class APIHandler extends JavaPlugin {
      * while there is no Currency plugin installed.
      */
     public CurrencyAPI getCurrencyAPI() throws NoCurrencyPluginException {
-        if (permissionsAPI.isEmpty()) {
-            throw new NoCurrencyPluginException("No Currency plugin installed!");
+        if (!isCurrencyLoaded) {
+            registerPlugins(APIs.Currency);
+            isCurrencyLoaded = true;
+        }
+        if (currencyAPI.isEmpty()) {
+            throw new NoCurrencyPluginException();
         }
         return currencyAPI;
     }
@@ -105,13 +102,21 @@ public class APIHandler extends JavaPlugin {
      * @param p The plugin to be added
      * @param api The desired Category
      */
-    public void registerPlugin(Plugin p, APIs api) {
+    public void registerPlugins(APIs api) {
         switch (api) {
             case Currency:
-                currencyAPI.registerPlugin((CurrencyInterface) p);
+                for (Plugin p : getServer().getPluginManager().getPlugins()) {
+                    if (CurrencyInterface.class.isInstance(p)) {
+                        currencyAPI.registerPlugin((CurrencyInterface) p);
+                    }
+                }
                 break;
             case Permissions:
-                permissionsAPI.registerPlugin((PermissionsInterface) p);
+                for (Plugin p : getServer().getPluginManager().getPlugins()) {
+                    if (PermissionsInterface.class.isInstance(p)) {
+                        permissionsAPI.registerPlugin((PermissionsInterface) p);
+                    }
+                }
                 break;
         }
     }

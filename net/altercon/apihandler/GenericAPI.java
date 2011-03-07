@@ -2,6 +2,8 @@
 package net.altercon.apihandler;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Generic Observer-Pattern for APIs
@@ -23,4 +25,5 @@ public class GenericAPI<E> {
     public boolean isEmpty() {
         return clients.isEmpty();
     }
+    
 }

@@ -9,10 +9,7 @@ package net.altercon.apihandler;
 public class NoPermissionPluginException extends Exception{
 
     public NoPermissionPluginException() {
-    }
-
-    public NoPermissionPluginException(String ex) {
-        super(ex);
+        super("No permissions plugin found!");
     }
 
 }

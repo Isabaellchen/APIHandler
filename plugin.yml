@@ -1,5 +1,5 @@
 name: APIHandler
 
-main: isabaellchen.apihandler.APIHandler
+main: net.altercon.apihandler.APIHandler
 
-version: 0.1
+version: 0.2
