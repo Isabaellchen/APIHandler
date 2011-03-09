@@ -1,4 +1,4 @@
-package net.altercon.apihandler;
+package net.altercon.apihandler.apis;
 
 /**
  * Holds all the Plugin Categories.

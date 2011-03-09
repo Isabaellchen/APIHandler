@@ -2,6 +2,15 @@ package net.altercon.apihandler;
 
 import java.util.HashMap;
 import java.util.logging.Logger;
+
+import net.altercon.apihandler.apis.APIs;
+import net.altercon.apihandler.apis.currency.CurrencyAPI;
+import net.altercon.apihandler.apis.currency.CurrencyInterface;
+import net.altercon.apihandler.apis.currency.NoCurrencyPluginException;
+import net.altercon.apihandler.apis.permissions.NoPermissionPluginException;
+import net.altercon.apihandler.apis.permissions.PermissionsAPI;
+import net.altercon.apihandler.apis.permissions.PermissionsInterface;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -74,7 +83,7 @@ public class APIHandler extends JavaPlugin {
             registerPlugins(APIs.Permissions);
             isPermissionsLoaded = true;
         }
-        if (permissionsAPI.isEmpty()) {
+        if (!permissionsAPI.isRegistered()) {
             throw new NoPermissionPluginException();
         }
         return permissionsAPI;
@@ -91,7 +100,7 @@ public class APIHandler extends JavaPlugin {
             registerPlugins(APIs.Currency);
             isCurrencyLoaded = true;
         }
-        if (currencyAPI.isEmpty()) {
+        if (!currencyAPI.isRegistered()) {
             throw new NoCurrencyPluginException();
         }
         return currencyAPI;

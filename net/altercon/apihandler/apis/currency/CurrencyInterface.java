@@ -1,5 +1,5 @@
 
-package net.altercon.apihandler;
+package net.altercon.apihandler.apis.currency;
 
 /**
  * Defines the standard methods that a Currency plugin should have.
